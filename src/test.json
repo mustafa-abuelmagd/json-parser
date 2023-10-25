@@ -1,0 +1,31 @@
+{
+  "name": "Mustafa",
+  "age": 27,
+  "job": "Developer",
+  "isMarried": false,
+  "siblings": [
+    {
+      "Ahmet": {
+        "name": "Ahmet",
+        "age": 27,
+        "job": "Developer",
+        "isMarried": false
+      }
+    },
+    {
+      "Mehmet": {
+        "name": "Mehmet",
+        "age": 27,
+        "job": "Developer",
+        "isMarried": false
+      }
+    },
+    {
+      "Ayse": {
+        "name": "Ayse",
+        "age": 27,
+        "job": "Developer",
+        "isMarried": false
+      }
+    }]
+}

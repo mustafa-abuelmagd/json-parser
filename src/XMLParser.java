@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 public class XMLParser {
     final String fileString;
     private String[] tokens;
+    Map<String, Object> mapRepresentation;
 
     XMLParser(String fileString) {
         this.fileString = fileString;
@@ -89,9 +90,9 @@ public class XMLParser {
 
     public String getTagName(String str) {
         if (this.isTag(str)) {
-            return str.replace("<","")
-                    .replace(">","")
-                    .replace("/","");
+            return str.replace("<", "")
+                    .replace(">", "")
+                    .replace("/", "");
         } else {
             return null;
         }
@@ -100,85 +101,74 @@ public class XMLParser {
 
 
     public void loadDocument() {
-        Stack<String> stack = new Stack<>();
+//        Stack<String> stack = new Stack<>();
+        XMLNode root = new XMLNode(this.getTagName(this.tokens[0]));
+        XMLDocumentTree XMLDocument = new XMLDocumentTree(root);
         Stack<XMLNode> XMLNodeStack = new Stack<>();
+        XMLNodeStack.push(root);
         Map<String, Object> dynamicMap = new HashMap<>();
-        ArrayList<XMLNode> nodeList = new ArrayList<>();
-
-        // using the stack to form the XML document by creating the nodes based
-        // on the first element in the stack
-        // 1- if it's  a self-closing tag; it's easy, create a node with that, self-closing tags do not have children
-        // 2- if it's an opening tag; push the opening tag to the stack and create a node with that name
-        // the value of the current opening tag will be the next non tag token
-        // if it's a closing tag; pop the first element from the stack
-        // if there's a current opening tag and the nxt token is another opening tag; then it's a child
 
 
-        for (int i = 0; i < this.tokens.length; i++) {
-            System.out.println("ITR::  "+ this.tokens[i]);
+        for (int i = 1; i < this.tokens.length; i++) {
             // if the current token is an opening tag or a self-closing tag, we create a node and push it
             if (this.isOpeningTag(this.tokens[i]) || this.isSelfClosingTag(this.tokens[i])) {
-                System.out.println("opening or self opening::  "+ this.tokens[i]);
 
                 XMLNode node = new XMLNode(this.getTagName(this.tokens[i]));
-                if (!stack.isEmpty() &&this.isOpeningTag(stack.peek())) {
-                    System.out.println("setting children::  "+XMLNodeStack.peek().getName() );
 
-                    XMLNodeStack.peek().children.add(node);
-                    node.setParent(XMLNodeStack.peek());
-
-
-                    //TODO we need a way to implemnt the array elements and
-                    // add them. may be if the previouse element in the
-                    // stack has the same name then it's an array;
-                    // but elements are poped. think or a way
-
-                }
                 //only if a tag is an opening tag that we push it to either of the stacks
-                if (this.isOpeningTag(this.tokens[i])){
+                if (this.isOpeningTag(this.tokens[i])) {
                     XMLNodeStack.push(node);
-                    stack.push(this.tokens[i]);
                 }
 
             }
             // if the current token is not a tag; then it's the value of the current tag and node
             else if (!this.isTag(this.tokens[i])) {
-                System.out.println("setting tag text::  "+XMLNodeStack.peek().getName());
-
                 XMLNodeStack.peek().setText(this.tokens[i]);
             }
+
             // and if the current token is a closing tage; we pop from the two stacks
             else if (this.isClosingTag(this.tokens[i])) {
-                System.out.println("putting in dectionary::  "+XMLNodeStack.peek().getName());
-
-                dynamicMap.put(XMLNodeStack.peek().getName(),XMLNodeStack.peek().getText() );
-                if(Objects.equals(XMLNodeStack.peek().getName(), this.getTagName(this.tokens[i]) )){
-                    System.out.println("poping::  "+XMLNodeStack.peek().getName());
-
-                    stack.pop();
-                    XMLNodeStack.pop();
+                dynamicMap.put(XMLNodeStack.peek().getName(), XMLNodeStack.peek().getText());
+                XMLNode lastNode = XMLNodeStack.pop();
+                if (!XMLNodeStack.isEmpty()) {
+                    XMLNodeStack.peek().appendChild(lastNode);
                 }
             }
         }
-        for (Map.Entry<String, Object> entry : dynamicMap.entrySet()) {
-            String key = entry.getKey();
-            System.out.print(key + "::: ");
-//            for (String value : values) {
-            System.out.print(entry.getValue() + ", ");
-//            }
-            System.out.println(); // Move to the next line for the next key
-        }
 
+        printTree(root);
 
     }
 
-//    get the nodes
+    public Map<String, Object> getDocument(XMLNode root) {
+        Map<String, Object> dynamicMap = new HashMap<>();
+        dynamicMap.put(root.getName(), root.getText());
 
-//    get the node children
+        if (!root.getChildren().isEmpty()) {
+            for (XMLNode child : root.getChildren()) {
+                dynamicMap.put(child.getName(), getDocument(child));
+            }
+        }
+        return dynamicMap;
+    }
 
-//    get node attributes
+    public static void printTree(XMLNode root) {
+        printNode(root, "", true);
+    }
 
-//    get node text
+    private static void printNode(XMLNode node, String prefix, boolean isTail) {
+        System.out.println(prefix + (isTail ? "└── " : "├── ") + node.getName()+": "+node.getText());
+
+        ArrayList<XMLNode> children = node.getChildren();
+        for (int i = 0; i < children.size() - 1; i++) {
+            printNode(children.get(i), prefix + (isTail ? "    " : "│   "), false);
+        }
+
+        if (!children.isEmpty()) {
+            printNode(children.getLast(), prefix + (isTail ? "    " : "│   "), true);
+        }
+    }
+
 }
 
 

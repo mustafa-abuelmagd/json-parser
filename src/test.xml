@@ -1,0 +1,11 @@
+<person>
+    <name>Mustafa</name>
+    <age>27</age>
+    <job>Developer</job>
+    <isMarried>false</isMarried>
+    <siblings>
+        <sibling>Ahmet</sibling>
+        <sibling>Mehmet</sibling>
+        <sibling>Ayse</sibling>
+    </siblings>
+</person>

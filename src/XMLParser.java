@@ -10,9 +10,13 @@ public class XMLParser {
 
     XMLParser(String fileString) {
         this.fileString = fileString;
+
         this.tokens = this.getTokens().toArray(new String[0]);
-//        getTags();
+        System.out.println("\n----------------------------------------------------- \n");
+        System.out.println("map representation of the XML file: \n");
         this.loadDocument();
+        System.out.println("\n----------------------------------------------------- \n");
+
     }
 
 
@@ -49,18 +53,9 @@ public class XMLParser {
         tokens = (ArrayList<String>) tokens.stream()
                 .filter(str -> !str.isEmpty())
                 .collect(Collectors.toList());
-//
-//        for (int i = 0; i < tokens.size(); i++) {
-//            System.out.println("I  " + i + ":  " + tokens.get(i));
-//        }
 
         return tokens;
     }
-
-//    get the tags
-    //    tags begin with "<" and end with either ">", "/>"
-    //    open tags being with "</"
-    //    self-closing tags end with "/>"
 
     public ArrayList<String> getTags() {
         ArrayList<String> tags = new ArrayList<>();
@@ -101,7 +96,6 @@ public class XMLParser {
 
 
     public void loadDocument() {
-//        Stack<String> stack = new Stack<>();
         XMLNode root = new XMLNode(this.getTagName(this.tokens[0]));
         XMLDocumentTree XMLDocument = new XMLDocumentTree(root);
         Stack<XMLNode> XMLNodeStack = new Stack<>();
@@ -135,7 +129,6 @@ public class XMLParser {
                 }
             }
         }
-
         printTree(root);
 
     }

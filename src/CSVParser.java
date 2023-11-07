@@ -2,33 +2,22 @@ import java.util.*;
 
 public class CSVParser {
     final String fileString;
-    private String[] tokens;
     private String[] colNames;
     private String[] entries;
 
     CSVParser(String fileString) {
         this.fileString = fileString;
-        this.tokens = this.getTokens().toArray(new String[0]);
+        this.getTokens();
         this.getMappedEntries();
     }
 
-    public ArrayList<String> getTokens() {
-        ArrayList<String> tokens = new ArrayList<>();
+    public void getTokens() {
         String[] lines = this.fileString.split("\n");
+//      getting the column names; which are the first line of the csv file
+
         this.colNames = lines[0].split(",");
-
+//      getting the entries; which are the rest of the lines of the csv file
         this.entries = Arrays.copyOfRange(lines, 1, lines.length);
-
-////        for (int i = 1; i < lines.length; i++) {
-////            tokens.addAll(List.of(lines[i].split(",")));
-////        }
-//
-//        for (int i = 0; i < entries.length; i++) {
-//            System.out.println(entries[i]);
-//        }
-
-
-        return tokens;
     }
 
     public ArrayList<Map<String, Object>> getMappedEntries() {
@@ -37,9 +26,6 @@ public class CSVParser {
         for (int i = 0; i < this.entries.length; i++) {
             String[] values = this.entries[i].split(",");
 
-//            Exception IllegalArgumentException = new Exception("lengths are not the same");
-//            if (values.length != this.colNames.length) throw IllegalArgumentException;
-
             for (int j = 0; j < values.length; j++) {
                 entry.put(this.colNames[j], values[j]);
             }
@@ -47,7 +33,9 @@ public class CSVParser {
             entry= new HashMap<>();
 
         }
+        System.out.println("\n----------------------------------------------------- \n");
 
+        System.out.println("map representation of the csv file: \n");
         System.out.print("[\n");
         for (Map<String, Object> tempEntry : entries) {
             System.out.print("{\n");
@@ -60,7 +48,7 @@ public class CSVParser {
             System.out.print("\n},");
         }
         System.out.print("\n]");
-
+        System.out.println("\n----------------------------------------------------- \n");
 
         return entries;
     }

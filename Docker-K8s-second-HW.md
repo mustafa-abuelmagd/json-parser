@@ -88,8 +88,8 @@ spec:
 ```
  where `mustafaabuelmagd/testing:first` is the image pushed to `dockerhub` from the previous step
 
-* to list available `kubernates` deployments we use the command `kubectl get deployments`:![Screenshot from 2023-11-28 09-28-40.png](..%2F..%2F..%2F..%2FPictures%2FScreenshots%2FScreenshot%20from%202023-11-28%2009-28-40.png)
-* to list available `kubernates` pods we use the command `kubectl get pods` :![Screenshot from 2023-11-28 09-29-26.png](..%2F..%2F..%2F..%2FPictures%2FScreenshots%2FScreenshot%20from%202023-11-28%2009-29-26.png)
+* to list available `kubernates` deployments we use the command `kubectl get deployments`:![Screenshot from 2023-11-28 09-28-40.png](<Screenshot from 2023-11-28 09-28-40.png>)
+* to list available `kubernates` pods we use the command `kubectl get pods` :![Screenshot from 2023-11-28 09-29-26.png](<Screenshot from 2023-11-28 09-29-26.png>)
 
 * to get the available containers inside of a pod in kubernates we use the command `kubectl get pod <pod-name> -o json`: this outputs the pod information in a json format: 
   ```
@@ -118,7 +118,7 @@ spec:
 }
 
 and from the pod specs we can get the container name `testing-nginx`
-* to access the running container from the *browser environment* with that name we'll need to forward the ports first using the command `kubectl port-forward pod/<pod-name> 8080:80`  and we get the following ![Screenshot from 2023-11-29 09-09-33.png](..%2F..%2F..%2F..%2FPictures%2FScreenshots%2FScreenshot%20from%202023-11-29%2009-09-33.png)
+* to access the running container from the *browser environment* with that name we'll need to forward the ports first using the command `kubectl port-forward pod/<pod-name> 8080:80`  and we get the following ![Screenshot from 2023-11-29 09-09-33.png](<Screenshot from 2023-11-29 09-09-33.png>)
 * the difference between `create -f` and `apply -f` in `kubernates` is that 
 	* `apply -f` is used to apply the changes in a `.yaml` file to the resource if the resource is bound. if the resource is not found; it creates it 
 		* use case: `kubectl apply -f deployment.yaml`
@@ -126,13 +126,13 @@ and from the pod specs we can get the container name `testing-nginx`
 		* use case: when we want to create a new resource and we need to make sure that the resource is only created once and avoid any accedintal updates
 
 * to delete a kubernates pod we use the command `kubectl delete pod <pod-name>`
-	* getting the current existing pods `kubectl get pods`![Screenshot from 2023-11-29 10-00-04.png](..%2F..%2F..%2F..%2FPictures%2FScreenshots%2FScreenshot%20from%202023-11-29%2010-00-04.png)
+	* getting the current existing pods `kubectl get pods`![Screenshot from 2023-11-29 10-00-04.png](<Screenshot from 2023-11-29 10-00-04.png>)
 	* deleting the pod with the name `my-deployment-74786fb4b7-2xnlh` using the command `kubectl delete my-deployment-74786fb4b7-2xnlh`, and then list available pods using `kubectl get pods` 
 	* the pod `my-deployment-74786fb4b7-2xnlh` is no longer available, and another one with the name `my-deployment-74786fb4b7-6tlb8` is created
 
-* creating a pod directly with the specs ![Screenshot from 2023-11-29 10-04-21.png](..%2F..%2F..%2F..%2FPictures%2FScreenshots%2FScreenshot%20from%202023-11-29%2010-04-21.png)
+* creating a pod directly with the specs ![Screenshot from 2023-11-29 10-04-21.png](<Screenshot from 2023-11-29 10-04-21.png>)
 	* to create this resource we use the command `kubectl create -f pod.yaml` in the same folder
-	* `kubectl get pods` now shows the new pod with the name  `my-pod`  ![Screenshot from 2023-11-29 10-05-53.png](..%2F..%2F..%2F..%2FPictures%2FScreenshots%2FScreenshot%20from%202023-11-29%2010-05-53.png)
-	* trying to create the resource again using `create -f` will give an error ![Screenshot from 2023-11-29 10-07-56.png](..%2F..%2F..%2F..%2FPictures%2FScreenshots%2FScreenshot%20from%202023-11-29%2010-07-56.png)
+	* `kubectl get pods` now shows the new pod with the name  `my-pod`  ![Screenshot from 2023-11-29 10-05-53.png](<Screenshot from 2023-11-29 10-05-53.png>)
+	* trying to create the resource again using `create -f` will give an error ![..%2F..%2F..%2F..%2FPictures%2FScreenshots%2FScreenshot%20from%202023-11-29%2010-07-56.png](<Screenshot from 2023-11-29 10-07-56.png>)
 	* to delete the created pod we use the command `kubectl delete pod my-pod`
-	* now list available pods again using `kubectl get pods` shows that the created pod directly is not recreated or managed by kubernates ![Screenshot from 2023-11-29 10-09-58.png](..%2F..%2F..%2F..%2FPictures%2FScreenshots%2FScreenshot%20from%202023-11-29%2010-09-58.png)
+	* now list available pods again using `kubectl get pods` shows that the created pod directly is not recreated or managed by kubernates ![!\[Screenshot from 2023-11-29 10-09-58.png\]()](<Screenshot from 2023-11-29 10-09-58.png>)
